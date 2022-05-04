@@ -1,0 +1,91 @@
+
+/**
+ * @method storeItem
+ * @param {String} key
+ * @param {String|Number|Object|Boolean} value
+ */
+export const storeItem = function(key, value) {
+  if (typeof key !== 'string') {
+    console.log(
+      `Argument key must be a string: {key}`
+    );
+  }
+  if (key.endsWith('TypeID')) {
+    console.log(
+      `Argument key must not end with 'TypeID': ${key}`
+    );
+  }
+
+  if (typeof value === 'undefined') {
+    console.log('You cannot store undefined variables');
+  }
+  let type = typeof value;
+  switch (type) {
+    case 'number':
+    case 'boolean':
+      value = value.toString();
+      break;
+    case 'object':
+      value = JSON.stringify(value);
+      break;
+    case 'string':
+    default:
+      break;
+  }
+
+  localStorage.setItem(key, value);
+  const typeKey = `${key}TypeID`;
+  localStorage.setItem(typeKey, type);
+};
+
+/**
+ * @method getItem
+ * @param {String} key name that you wish to use to store in local storage
+ * @return {Number|Object|String|Boolean} Value of stored item
+ */
+const getItem = function(key) {
+  let value = localStorage.getItem(key);
+  const type = localStorage.getItem(`${key}TypeID`);
+  if (typeof type === 'undefined') {
+    console.log(
+      `Unable to determine type of item stored as ${key} in local storage`
+    );
+  } else if (value !== null) {
+    switch (type) {
+      case 'number':
+        value = parseFloat(value);
+        break;
+      case 'boolean':
+        value = value === 'true';
+        break;
+      case 'object':
+        value = JSON.parse(value);
+        break;
+      case 'string':
+      default:
+        break;
+    }
+  }
+  return value;
+};
+
+/**
+ * @method clearStorage
+ */
+const clearStorage = function() {
+  localStorage.clear();
+};
+
+/**
+ * @method removeItem
+ * @param {String} key
+ */
+const removeItem = function(key) {
+  if (typeof key !== 'string') {
+    console.log(
+      `Argument passed: ${key} is not a string.`
+    );
+  }
+  localStorage.removeItem(key);
+  localStorage.removeItem(`${key}TypeID`);
+};
