@@ -43,7 +43,7 @@ export const storeItem = function(key, value) {
  * @param {String} key name that you wish to use to store in local storage
  * @return {Number|Object|String|Boolean} Value of stored item
  */
-const getItem = function(key) {
+export const getItem = function(key) {
   let value = localStorage.getItem(key);
   const type = localStorage.getItem(`${key}TypeID`);
   if (typeof type === 'undefined') {
@@ -72,7 +72,7 @@ const getItem = function(key) {
 /**
  * @method clearStorage
  */
-const clearStorage = function() {
+export const clearStorage = function() {
   localStorage.clear();
 };
 
@@ -80,7 +80,7 @@ const clearStorage = function() {
  * @method removeItem
  * @param {String} key
  */
-const removeItem = function(key) {
+export const removeItem = function(key) {
   if (typeof key !== 'string') {
     console.log(
       `Argument passed: ${key} is not a string.`
